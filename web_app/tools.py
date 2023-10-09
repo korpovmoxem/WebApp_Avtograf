@@ -14,6 +14,15 @@ def bitrix_auth() -> str:
         return file_data['b24_webhook']
 
 
+def get_folder_id() -> str:
+    """
+    Считывает ID папки для загрузки отчета
+    """
+
+    with open('auth.yml') as file:
+        file_data = yaml.safe_load(file)
+        return str(file_data['bitrix_folder_id'])
+
 def fast_bitrix_client() -> Bitrix:
     """
     Создает объект класса Bitrix из библиотеки fast_bitrix24 с токеном вебхука в параметрах

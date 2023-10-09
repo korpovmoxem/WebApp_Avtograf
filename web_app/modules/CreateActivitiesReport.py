@@ -8,7 +8,7 @@ from openpyxl.utils import get_column_letter
 from openpyxl.styles import PatternFill, Font, Alignment
 from bs4 import BeautifulSoup
 
-from web_app.tools import fast_bitrix_client, send_bitrix_request
+from web_app.tools import fast_bitrix_client, send_bitrix_request, get_folder_id
 
 
 b = fast_bitrix_client()
@@ -434,7 +434,8 @@ def create_activities_report(request: dict) -> None:
     workbook.save(report_name)
 
     # Загрузка отчета в Битрикс
-    bitrix_folder_id = '180103'
+
+    bitrix_folder_id = get_folder_id()
     with open(report_name, 'rb') as file:
         report_file = file.read()
     report_file_base64 = str(base64.b64encode(report_file))[2:]
