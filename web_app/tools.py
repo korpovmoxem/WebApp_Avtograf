@@ -11,7 +11,7 @@ def bitrix_auth() -> str:
 
     with open('auth.yml') as file:
         file_data = yaml.safe_load(file)
-        return str(file_data['b24_webhook'])
+        return file_data['b24_webhook']
 
 
 def fast_bitrix_client() -> Bitrix:
