@@ -432,7 +432,7 @@ def create_activities_report(request: dict) -> None:
     change_sheet_style(sheet, add_filters=False, change_colors_and_fonts=False, change_width=False, change_fonts=True)
 
     workbook.save(report_name)
-    exit()
+
     # Загрузка отчета в Битрикс
     bitrix_folder_id = '180103'
     with open(report_name, 'rb') as file:
@@ -443,16 +443,17 @@ def create_activities_report(request: dict) -> None:
         'data': {'NAME': report_name},
         'fileContent': report_file_base64
     })
-    '''
+
     b.call('im.notify.system.add', {
         'USER_ID': request['user_id'][5:],
         'MESSAGE': f'Отчет по активностям сформирован. {upload_report["DETAIL_URL"]}'})
     os.remove(report_name)
-    '''
 
+'''
 create_activities_report({
     'date_start': '01.10.2023',
     'date_end': '',
     'users': ''
 
 })
+'''
