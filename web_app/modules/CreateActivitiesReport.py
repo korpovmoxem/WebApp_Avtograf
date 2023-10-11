@@ -445,7 +445,7 @@ def create_activities_report(request: dict) -> None:
         'fileContent': report_file_base64
     })
 
-    b.call('im.notify.system.add', {
+    send_bitrix_request('im.notify.system.add', {
         'USER_ID': request['who_starts'][5:],
         'MESSAGE': f'Отчет по активностям сформирован. {upload_report["DETAIL_URL"]}'})
     os.remove(report_name)
