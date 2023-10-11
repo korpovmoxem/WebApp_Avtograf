@@ -423,7 +423,7 @@ def create_activities_report(request: dict) -> None:
             f'Пользователи (users): {request["users"]}',
         ],
         [
-            'Запущен (who_starts): 1 Карпов Максим',
+            f'Запущен (who_starts): {request["who_starts"]}',
         ],
     ]
 
@@ -446,15 +446,6 @@ def create_activities_report(request: dict) -> None:
     })
 
     b.call('im.notify.system.add', {
-        'USER_ID': request['user_id'][5:],
+        'USER_ID': request['who_starts'][5:],
         'MESSAGE': f'Отчет по активностям сформирован. {upload_report["DETAIL_URL"]}'})
     os.remove(report_name)
-
-'''
-create_activities_report({
-    'date_start': '01.10.2023',
-    'date_end': '',
-    'users': ''
-
-})
-'''
