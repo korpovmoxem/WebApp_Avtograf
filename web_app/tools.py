@@ -23,6 +23,7 @@ def get_folder_id() -> str:
         file_data = yaml.safe_load(file)
         return str(file_data['bitrix_folder_id'])
 
+
 def fast_bitrix_client() -> Bitrix:
     """
     Создает объект класса Bitrix из библиотеки fast_bitrix24 с токеном вебхука в параметрах
@@ -48,3 +49,32 @@ def send_bitrix_request(method: str, data=None) -> dict | list:
     if 'result' in request_json:
         return request_json['result']
     print(request_json)
+
+
+def get_user_folder_id(user_id: str) -> str:
+    folder_name = 'Отчет_по_активностям'
+    b = fast_bitrix_client()
+    storage_info = b.get_all('disk.storage.getlist', {
+        'filter': {
+            'ENTITY_TYPE': 'user',
+            'ENTITY_ID': user_id,
+        }
+    })
+    if not storage_info:
+        return get_folder_id()
+
+    storage_id = storage_info[0]['ID']
+    storage_folders = b.get_all('disk.storage.getchildren', {
+        'id': storage_id
+    })
+    report_folder = list(filter(lambda x: x['NAME'] == folder_name, storage_folders))
+    if report_folder:
+        return report_folder[0]['ID']
+
+    new_folder = b.call('disk.storage.addfolder', {
+        'id': storage_id,
+        'data': {
+            'NAME': folder_name
+        }
+    })
+    return new_folder['ID']
